@@ -6,9 +6,6 @@ public class Subset {
     while (!StdIn.isEmpty()) {
       String str = StdIn.readString();
       randomizedQueue.enqueue(str);
-      if (randomizedQueue.size() > k) {
-        randomizedQueue.dequeue();
-      }
     }
     for (int i = 0; i < k; i++) {
       StdOut.println(randomizedQueue.dequeue());
