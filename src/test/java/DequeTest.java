@@ -239,4 +239,36 @@ public class DequeTest {
     assertEquals(0, deque.size());
   }
 
+  @Test
+  public void testAddFirstRemoveFirst() throws Exception {
+    Deque<String> deque = new Deque<String>();
+    assertNotNull(deque);
+    deque.addFirst("one");
+    assertEquals("one", deque.removeLast());
+    try {
+      deque.removeFirst();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    assertTrue(deque.isEmpty());
+    assertEquals(0, deque.size());
+  }
+
+  @Test
+  public void testAddLastRemoveLast() throws Exception {
+    Deque<String> deque = new Deque<String>();
+    assertNotNull(deque);
+    deque.addLast("one");
+    assertEquals("one", deque.removeFirst());
+    try {
+      deque.removeLast();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    assertTrue(deque.isEmpty());
+    assertEquals(0, deque.size());
+  }
+
 }
