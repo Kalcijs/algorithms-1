@@ -1,15 +1,15 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class RandomizedQueue<T> implements Iterable<T> {
+public class RandomizedQueue<Item> implements Iterable<Item> {
 
-  private T[] arr;
+  private Item[] arr;
   private int capacity;
   private int size;
 
   public RandomizedQueue() {
     capacity = 1;
-    arr = (T[]) new Object[capacity];
+    arr = (Item[]) new Object[capacity];
   }
 
   public boolean isEmpty() {
@@ -24,7 +24,7 @@ public class RandomizedQueue<T> implements Iterable<T> {
    * 
    * @param item
    *          to add */
-  public void enqueue(T item) {
+  public void enqueue(Item item) {
     if (item == null) {
       throw new NullPointerException();
     }
@@ -36,7 +36,7 @@ public class RandomizedQueue<T> implements Iterable<T> {
   }
 
   private void resize(int newCapacity) {
-    T[] newArr = (T[]) new Object[newCapacity];
+    Item[] newArr = (Item[]) new Object[newCapacity];
     for (int i = 0; i < size; i++) {
       newArr[i] = arr[i];
     }
@@ -47,12 +47,12 @@ public class RandomizedQueue<T> implements Iterable<T> {
   /** Remove and return a random item.
    * 
    * @return the random item */
-  public T dequeue() {
+  public Item dequeue() {
     if (isEmpty()) {
       throw new NoSuchElementException();
     }
     int index = StdRandom.uniform(size);
-    T item = arr[index];
+    Item item = arr[index];
     arr[index] = arr[--size];
     if (size < capacity / 2) {
       resize(capacity / 2);
@@ -63,7 +63,7 @@ public class RandomizedQueue<T> implements Iterable<T> {
   /** Return (but do not remove) a random item.
    * 
    * @return the random item */
-  public T sample() {
+  public Item sample() {
     if (isEmpty()) {
       throw new NoSuchElementException();
     }
@@ -71,14 +71,14 @@ public class RandomizedQueue<T> implements Iterable<T> {
   }
 
   @Override
-  public Iterator<T> iterator() {
+  public Iterator<Item> iterator() {
     return new RandomizedQueueIterator();
   }
 
   public static void main(String[] args) {
   }
 
-  private class RandomizedQueueIterator implements Iterator<T> {
+  private class RandomizedQueueIterator implements Iterator<Item> {
     private int[] index = new int[size];
     private int current;
 
@@ -89,20 +89,17 @@ public class RandomizedQueue<T> implements Iterable<T> {
       StdRandom.shuffle(index);
     }
 
-    @Override
     public boolean hasNext() {
       return current < size;
     }
 
-    @Override
-    public T next() {
+    public Item next() {
       if (current >= size || size == 0) {
         throw new NoSuchElementException();
       }
       return arr[index[current++]];
     }
 
-    @Override
     public void remove() {
       throw new UnsupportedOperationException();
     }

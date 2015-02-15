@@ -1,10 +1,10 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Deque<T> implements Iterable<T> {
+public class Deque<Item> implements Iterable<Item> {
 
-  private Elem<T> first;
-  private Elem<T> last;
+  private Elem<Item> first;
+  private Elem<Item> last;
   private int size;
 
   public Deque() {
@@ -22,16 +22,16 @@ public class Deque<T> implements Iterable<T> {
    * 
    * @param item
    *          to add */
-  public void addFirst(T item) {
+  public void addFirst(Item item) {
     if (item == null) {
       throw new NullPointerException();
     }
     if (first != null) {
-      Elem<T> elem = new Elem<T>(item, first, null);
+      Elem<Item> elem = new Elem<Item>(item, first, null);
       first.prev = elem;
       first = elem;
     } else {
-      first = new Elem<T>(item, null, null);
+      first = new Elem<Item>(item, null, null);
       last = first;
     }
     size++;
@@ -41,16 +41,16 @@ public class Deque<T> implements Iterable<T> {
    * 
    * @param item
    *          to add */
-  public void addLast(T item) {
+  public void addLast(Item item) {
     if (item == null) {
       throw new NullPointerException();
     }
     if (last != null) {
-      Elem<T> elem = new Elem<T>(item, null, last);
+      Elem<Item> elem = new Elem<Item>(item, null, last);
       last.next = elem;
       last = elem;
     } else {
-      last = new Elem<T>(item, null, null);
+      last = new Elem<Item>(item, null, null);
       first = last;
     }
     size++;
@@ -59,14 +59,14 @@ public class Deque<T> implements Iterable<T> {
   /** Remove and return the item from the front.
    * 
    * @return item from the front */
-  public T removeFirst() {
+  public Item removeFirst() {
     if (isEmpty()) {
       throw new NoSuchElementException();
     }
     if (first.next != null) {
       first.next.prev = null;
     }
-    T elem = first.data;
+    Item elem = first.data;
     first = first.next;
     size--;
     return elem;
@@ -75,21 +75,21 @@ public class Deque<T> implements Iterable<T> {
   /** Remove and return the item from the end.
    * 
    * @return item from the end */
-  public T removeLast() {
+  public Item removeLast() {
     if (isEmpty()) {
       throw new NoSuchElementException();
     }
     if (last.prev != null) {
       last.prev.next = null;
     }
-    T elem = last.data;
+    Item elem = last.data;
     last = last.prev;
     size--;
     return elem;
   }
 
   @Override
-  public Iterator<T> iterator() {
+  public Iterator<Item> iterator() {
     return new DequeIterator();
   }
 
@@ -109,25 +109,22 @@ public class Deque<T> implements Iterable<T> {
 
   }
 
-  private class DequeIterator implements Iterator<T> {
-    private Elem<T> current = first;
+  private class DequeIterator implements Iterator<Item> {
+    private Elem<Item> current = first;
 
-    @Override
     public boolean hasNext() {
       return current != null;
     }
 
-    @Override
-    public T next() {
+    public Item next() {
       if (!hasNext()) {
         throw new NoSuchElementException();
       }
-      T elem = current.data;
+      Item elem = current.data;
       current = current.next;
       return elem;
     }
 
-    @Override
     public void remove() {
       throw new UnsupportedOperationException();
     }
