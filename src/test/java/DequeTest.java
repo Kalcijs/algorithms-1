@@ -145,4 +145,98 @@ public class DequeTest {
     }
   }
 
+  @Test
+  public void testAddFirstRemoveLast() throws Exception {
+    Deque<String> deque = new Deque<String>();
+    assertNotNull(deque);
+    deque.addFirst("one");
+    assertEquals("one", deque.removeLast());
+    try {
+      deque.removeLast();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    try {
+      deque.removeFirst();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    assertTrue(deque.isEmpty());
+    assertEquals(0, deque.size());
+  }
+
+  @Test
+  public void testAddLastRemoveFirst() throws Exception {
+    Deque<String> deque = new Deque<String>();
+    assertNotNull(deque);
+    deque.addLast("one");
+    assertEquals("one", deque.removeFirst());
+    try {
+      deque.removeFirst();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    try {
+      deque.removeLast();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    assertTrue(deque.isEmpty());
+    assertEquals(0, deque.size());
+  }
+
+  @Test
+  public void testAddFirstRemoveLast2() throws Exception {
+    Deque<String> deque = new Deque<String>();
+    assertNotNull(deque);
+    deque.addFirst("two");
+    deque.addFirst("one");
+    verifyIterator(deque.iterator(), "one", "two");
+    assertEquals("two", deque.removeLast());
+    assertEquals("one", deque.removeLast());
+    try {
+      deque.removeLast();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    try {
+      deque.removeFirst();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    assertTrue(deque.isEmpty());
+    assertEquals(0, deque.size());
+  }
+
+  @Test
+  public void testAddLastRemoveFirst2() throws Exception {
+    Deque<String> deque = new Deque<String>();
+    assertNotNull(deque);
+    deque.addLast("one");
+    deque.addLast("two");
+    verifyIterator(deque.iterator(), "one", "two");
+    assertEquals("one", deque.removeFirst());
+    assertEquals("two", deque.removeFirst());
+    try {
+      deque.removeFirst();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    try {
+      deque.removeLast();
+      fail("Should fail on empty deque.");
+    } catch (NoSuchElementException e) {
+      // OK
+    }
+    assertTrue(deque.isEmpty());
+    assertEquals(0, deque.size());
+  }
+
 }
