@@ -1,9 +1,10 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class Deque<Item> implements Iterable<Item> {
+public class Deque<T> implements Iterable<T> {
 
-  private Elem<Item> first, last;
+  private Elem<T> first;
+  private Elem<T> last;
   private int size;
 
   public Deque() {
@@ -12,80 +13,84 @@ public class Deque<Item> implements Iterable<Item> {
   public boolean isEmpty() {
     return size == 0;
   }
+
   public int size() {
     return size;
   }
 
-  public void addFirst(Item item) {
-    if (item == null)
+  /** Add the item to the front.
+   * 
+   * @param item
+   *          to add */
+  public void addFirst(T item) {
+    if (item == null) {
       throw new NullPointerException();
+    }
     if (first != null) {
-      Elem<Item> e = new Elem<Item>(item, first, null);
-      first.prev = e;
-      first = e;
+      Elem<T> elem = new Elem<T>(item, first, null);
+      first.prev = elem;
+      first = elem;
     } else {
-      first = new Elem<Item>(item, null, null);
+      first = new Elem<T>(item, null, null);
       last = first;
     }
     size++;
   }
 
-  public void addLast(Item item) {
-    if (item == null)
+  /** Add the item to the end.
+   * 
+   * @param item
+   *          to add */
+  public void addLast(T item) {
+    if (item == null) {
       throw new NullPointerException();
+    }
     if (last != null) {
-      Elem<Item> e = new Elem<Item>(item, null, last);
-      last.next = e;
-      last = e;
+      Elem<T> elem = new Elem<T>(item, null, last);
+      last.next = elem;
+      last = elem;
     } else {
-      last = new Elem<Item>(item, null, null);
+      last = new Elem<T>(item, null, null);
       first = last;
     }
     size++;
   }
-  public Item removeFirst() {
-    if (isEmpty())
+
+  /** Remove and return the item from the front.
+   * 
+   * @return item from the front */
+  public T removeFirst() {
+    if (isEmpty()) {
       throw new NoSuchElementException();
-    Item e = first.data;
-    if (first.next != null)
+    }
+    if (first.next != null) {
       first.next.prev = null;
+    }
+    T elem = first.data;
     first = first.next;
     size--;
-    return e;
+    return elem;
   }
-  public Item removeLast() {
-    if (isEmpty())
+
+  /** Remove and return the item from the end.
+   * 
+   * @return item from the end */
+  public T removeLast() {
+    if (isEmpty()) {
       throw new NoSuchElementException();
-    Item e = last.data;
-    if (last.prev != null)
+    }
+    if (last.prev != null) {
       last.prev.next = null;
+    }
+    T elem = last.data;
     last = last.prev;
     size--;
-    return e;
+    return elem;
   }
+
   @Override
-  public Iterator<Item> iterator() {
-    return new Iterator<Item>() {
-      private Elem<Item> current = first;
-      @Override
-      public boolean hasNext() {
-        return current != null;
-      }
-
-      @Override
-      public Item next() {
-        if (!hasNext())
-          throw new NoSuchElementException();
-        Item e = current.data;
-        current = current.next;
-        return e;
-      }
-
-      @Override
-      public void remove() {
-        throw new UnsupportedOperationException();
-      }
-    };
+  public Iterator<T> iterator() {
+    return new DequeIterator();
   }
 
   public static void main(String[] args) {
@@ -93,12 +98,38 @@ public class Deque<Item> implements Iterable<Item> {
 
   private static class Elem<T> {
     private T data;
-    private Elem<T> next, prev;
+    private Elem<T> next;
+    private Elem<T> prev;
+
     public Elem(T data, Elem<T> next, Elem<T> prev) {
       this.data = data;
       this.next = next;
       this.prev = prev;
     }
 
+  }
+
+  private class DequeIterator implements Iterator<T> {
+    private Elem<T> current = first;
+
+    @Override
+    public boolean hasNext() {
+      return current != null;
+    }
+
+    @Override
+    public T next() {
+      if (!hasNext()) {
+        throw new NoSuchElementException();
+      }
+      T elem = current.data;
+      current = current.next;
+      return elem;
+    }
+
+    @Override
+    public void remove() {
+      throw new UnsupportedOperationException();
+    }
   }
 }
