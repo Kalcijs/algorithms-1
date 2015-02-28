@@ -41,46 +41,46 @@ public class Fast {
     }
 
     protected void printCollinears() {
-        for (int i = 0; i < points.length; i++) {
+        //StdOut.print("\t");print(points);
+        for (int i = 0; i < points.length-2; i++) {
             Point p = points[i];
-            //StdOut.print(String.format("%15s", p));
             Point[] points2 = Arrays.copyOfRange(points, i+1, points.length);
             Arrays.sort(points2, p.SLOPE_ORDER);
-            //StdOut.print("\t[");
-            boolean[] match = new boolean[points2.length];
-            double slopePrevious = Double.MIN_VALUE;
-            boolean found = false;
-            for (int j = 0; j < points2.length; j++) {
-                double slope = p.slopeTo(points2[j]);
-                if (slopePrevious == slope) {
-                    match[j] = true;
-                    if (!found) {
-                        match[j-1] = true;
-                        found = true;
+            //StdOut.print("\t");print(points2);
+            int num = 0;
+            for (int j = 1; j < points2.length; j++) {
+                if (p.slopeTo(points2[j-1]) == p.slopeTo(points2[j])) {
+                    num++;
+                    if (j+1 == points2.length && num > 1) {
+                        print(p, points2, j-num, num);
                     }
                 } else {
-                    slopePrevious = slope;
-                    if (found) break;
-                }
-                //StdOut.print(String.format("%.3f", p.slopeTo(points2[j])));
-                //StdOut.print(String.format("%16s", points2[j]));
-                //StdOut.print("    ");
-            }
-            if (found) {
-                StdOut.print(p);
-                for (int j = 0; j < points2.length; j++) {
-                    if (match[j]) {
-                        StdOut.print(" -> " + points2[j]);
-                        if (draw) p.drawTo(points2[j]);
+                    if (num > 1) {
+                        print(p, points2, j-num-1, num);
+                        num = 0;
                     }
                 }
-                StdOut.println();
             }
-            //StdOut.println("]");
         }
         if (draw) {
             StdDraw.show(0);
         }
+    }
+
+    private void print(Point[] p) {
+        for (int i = 0; i < p.length; i++) {
+            StdOut.print(p[i] + "\t");
+        }
+        StdOut.println();
+    }
+
+    private void print(Point p, Point[] points, int index, int count ) {
+        StdOut.print(p);
+        for (int i = 0; i <= count; i++) {
+            StdOut.print(" -> " + points[index+i]);
+        }
+        if (draw) p.drawTo(points[index+count]);
+        StdOut.println();
     }
 
     public static void main(String[] args) {

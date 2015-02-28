@@ -1,12 +1,15 @@
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class BruteDrawTest {
 
+    @Ignore
     @Test
     public void test6() throws Exception {
         new Brute().draw().load(file("input6.txt")).printCollinears();
     }
 
+    @Ignore
     @Test
     public void test8() throws Exception {
         new Brute().draw().load(file("input8.txt")).printCollinears();
